@@ -1,4 +1,5 @@
 import Input from "../Input/Input";
+import Chat from "./Chat";
 
 export default function Sidebar() {
     const chats = [
@@ -14,26 +15,12 @@ export default function Sidebar() {
                 <div className="font-bold text-lg">Chats</div>
             </div>
             {/* Search */}
-            <Input htmlFor="search" divStyle="p-4 rounded-md" id="search" type="text" placeholder="Search or start a new chat" className="w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600"/>
+            <Input htmlFor="search" divStyle="p-4 rounded-md" id="search" type="text" placeholder="Search or start a new chat" className="w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600" />
 
             {/* Chat List */}
             <div className="flex-1 overflow-y-auto">
                 {chats.map((chat) => (
-                    <div
-                        key={chat.id}
-                        className="flex items-center p-4 hover:bg-gray-200 cursor-pointer"
-                    >
-                        <div className="h-12 w-12 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold">
-                            {chat.name[0]}
-                        </div>
-                        <div className="ml-4 flex-1">
-                            <div className="flex justify-between items-center">
-                                <h4 className="font-bold text-gray-800">{chat.name}</h4>
-                                <span className="text-sm text-gray-500">{chat.time}</span>
-                            </div>
-                            <p className="text-sm text-gray-600 truncate">{chat.message}</p>
-                        </div>
-                    </div>
+                    <Chat key={chat.id} {...chat} />
                 ))}
             </div>
         </div>
