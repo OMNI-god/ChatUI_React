@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - ChatAPPUI
+name: Build and deploy Node.js app to Azure Web App - ChatAppUI
 
 on:
   push:
@@ -57,15 +57,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_9C636143AACD47C6B14DF9E1FE0C24DA }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_95AEAA647FC14808A369470548210A90 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9D3B8E5E7F2348A6918740B80F5C0098 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_23E36633332C4A308CDCC48F993DDDBF }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6A548E2B0F624264B275F283BADEDDF4 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_398494AC4D304112B19594F5BBBBFD77 }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'ChatAPPUI'
+          app-name: 'ChatAppUI'
           slot-name: 'Production'
           package: .
           
