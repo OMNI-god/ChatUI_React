@@ -2,7 +2,7 @@ import chats from "../../util/chats";
 import Input from "../Input/Input";
 import Chat from "./Chat";
 
-export default function Sidebar({onSelect}) {
+export default function Sidebar({onSelect,isSelected}) {
     return (
         <div className="flex flex-col h-screen max-w-[33.33%] bg-gray-100 border-r">
             {/* Header */}
@@ -15,7 +15,7 @@ export default function Sidebar({onSelect}) {
             {/* Chat List */}
             <div className="flex-1 overflow-x-hidden">
                 {chats.map((chat) => (
-                    <Chat key={chat.id} onSelect={onSelect} {...chat} />
+                    <Chat key={chat.id} isSelected={isSelected} onSelect={onSelect} {...chat} />
                 ))}
             </div>
         </div>

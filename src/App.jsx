@@ -14,7 +14,7 @@ function App() {
     <>
       {/* <Welcome /> */}
       <div className="flex">
-        <Sidebar onSelect={handleChatSelect}/>
+        <Sidebar onSelect={handleChatSelect} isSelected={selectedChat.id}/>
         <Chat_window chat={selectedChat}/>
       </div>
     </>
