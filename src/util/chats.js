@@ -1,6 +1,6 @@
 import profile_pic from "../assets/image.png";
 
-const chats = [
+let chats = [
     {
         id: 1,
         sender: "John Hoe",
