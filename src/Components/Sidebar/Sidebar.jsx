@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import chats from "../../util/chats";
 import Input from "../Input/Input";
 import Chat from "./Chat";
 
 export default function Sidebar({ onSelect, isSelected }) {
+    const searchParam = useRef("");
     const [chat, setChat] = useState(chats);
     function handleChatSelect(event) {
-        setChat(chats.filter((chat) => chat.sender.toLowerCase().includes(event.target.value.toLowerCase())));
+
     }
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setChat(chats.filter((chat) => chat.sender.toLowerCase().includes(event.target.value.toLowerCase())));
+        }, 300);
+    })
     function handleKeyDown(event) {
         if (event.key === "Enter") {
             handleChatSelect(event);
@@ -20,7 +26,7 @@ export default function Sidebar({ onSelect, isSelected }) {
                 <div className="font-bold text-lg">Chats</div>
             </div>
             {/* Search */}
-            <Input onChange={(event) => setTimeout(() => { handleChatSelect(event) }, 2000)} onE htmlFor="search" divStyle="p-4 rounded-md" id="search" type="text" placeholder="Search or start a new chat" className="w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600" />
+            <Input onKeyDown={handleKeyDown} onChange={(event) => setTimeout(() => { handleChatSelect(event) }, 2000)} htmlFor="search" divStyle="p-4 rounded-md" id="search" type="text" placeholder="Search or start a new chat" className="w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600" />
             {/* Chat List */}
             <div className="flex-1 overflow-x-hidden">
                 {chat.map((chat) => (
