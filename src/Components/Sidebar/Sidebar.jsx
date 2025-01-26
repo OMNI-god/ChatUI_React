@@ -1,18 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import chats from "../../util/chats";
 import Input from "../Input/Input";
 import Chat from "./Chat";
 
 export default function Sidebar({ onSelect, isSelected }) {
+    const [searchValue, setSearchValue] = useState(""); // State for search input
     const [chat, setChat] = useState(chats);
-    function handleChatSelect(event) {
-        setChat(chats.filter((chat) => chat.sender.toLowerCase().includes(event.target.value.toLowerCase())));
+
+    // Filter chats based on searchValue
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setChat(chats.filter((chat) => chat.sender.toLowerCase().includes(searchValue.toLowerCase())));
+        }, 300);
+        return () => clearTimeout(timer);
+    }, [searchValue]);
+
+    // Update search value on input change
+    function handleSearchChange(event) {
+        setSearchValue(event.target.value);
     }
-    function handleKeyDown(event) {
-        if (event.key === "Enter") {
-            handleChatSelect(event);
-        }
-    }
+
     return (
         <div className="flex flex-col h-screen min-w-[33.33%] max-w-[33.33%] bg-gray-100 border-r">
             {/* Header */}
@@ -20,7 +27,17 @@ export default function Sidebar({ onSelect, isSelected }) {
                 <div className="font-bold text-lg">Chats</div>
             </div>
             {/* Search */}
-            <Input onChange={(event) => setTimeout(() => { handleChatSelect(event) }, 2000)} onE htmlFor="search" divStyle="p-4 rounded-md" id="search" type="text" placeholder="Search or start a new chat" className="w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600" />
+            <Input
+                value={searchValue} // Controlled component
+                onChange={handleSearchChange} // Handle input change
+                onKeyDown={(e) => e.key === "Enter" && setSearchValue(e.target.value)} // Handle "Enter" key press
+                htmlFor="search"
+                divStyle="p-4 rounded-md"
+                id="search"
+                type="text"
+                placeholder="Search or start a new chat"
+                className="w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+            />
             {/* Chat List */}
             <div className="flex-1 overflow-x-hidden">
                 {chat.map((chat) => (

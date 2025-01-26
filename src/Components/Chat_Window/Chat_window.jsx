@@ -1,7 +1,7 @@
 import ChatInput from "./ChatInput";
 import Texts from "./Texts";
 
-export default function Chat_window({chat}) {
+export default function Chat_window({ chat }) {
     return (
         <div className="flex flex-col flex-1 bg-gray-100">
             {/* Header */}

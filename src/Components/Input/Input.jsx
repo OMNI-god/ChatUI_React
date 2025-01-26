@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 
-export default function ({ lable, isPassword, inputType, divStyle, htmlFor, ...props }) {
+const Input=forwardRef(function ({ lable, isPassword, inputType, divStyle, htmlFor, ...props },ref) {
     const [showPassword, setShowPassword] = useState(false);
 
     const handlePasswordToggle = () => {
@@ -12,7 +12,7 @@ export default function ({ lable, isPassword, inputType, divStyle, htmlFor, ...p
             {lable}
         </label>
         <div className="mt-2">
-            <input type={isPassword && showPassword ? "text": inputType}
+            <input ref={ref} type={isPassword && showPassword ? "text": inputType}
                 {...props}
             />
             {isPassword && <button
@@ -47,4 +47,5 @@ export default function ({ lable, isPassword, inputType, divStyle, htmlFor, ...p
             </button>}
         </div>
     </div>
-}
+});
+export default Input;
