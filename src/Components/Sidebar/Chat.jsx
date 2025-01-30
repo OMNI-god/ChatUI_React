@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 export default function Chat({ sender, chat, onSelect, id, isSelected }) {
     let selected = false;
     if (isSelected === id) selected = true;
