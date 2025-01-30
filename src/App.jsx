@@ -3,6 +3,7 @@ import Chat_window from './Components/Chat_Window/Chat_window'
 import Sidebar from './Components/Sidebar/Sidebar'
 import chats from './util/chats'
 import { useState } from 'react'
+import Welcome from './Components/Welcome_Page/Welcome.jsx'
 
 function App() {
   const [selectedChat, setSelectedChat] = useState(chats[0])
@@ -12,11 +13,11 @@ function App() {
   }
   return (
     <>
-      {/* <Welcome /> */}
-      <div className="flex">
+      <Welcome />
+      {/* <div className="flex">
         <Sidebar onSelect={handleChatSelect} isSelected={selectedChat.id}/>
         <Chat_window chat={selectedChat}/>
-      </div>
+      </div> */}
     </>
   )
 }
