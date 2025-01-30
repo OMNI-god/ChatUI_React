@@ -5,24 +5,29 @@ import { useRef, useState } from 'react';
 import { ReactComponent as MainIcon } from "../../assets/Main_Icon.jsx";
 import Input from '../Input/Input.jsx';
 import user_handeler from '../../util/user_handler.js';
+import { RotatingLines } from 'react-loader-spinner';
 
 export default function () {
     const [isLogin, setIsLogin] = useState(true);
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [loading, setLoading] = useState(false);
     let confirnPasswordStyle = "";
     const username_email = useRef("");
     const password = useRef("");
     const username = useRef("");
     function handleSubmit(event) {
-        // event.preventDefault();
         if (event.target.checkValidity()) {
             if (isLogin && (username_email.current.value != "" && password.current.value != "")) {
+                setLoading(prev=>!prev);
                 console.log(username_email.current.value, password.current.value);
-                user_handeler.login_or_register(username_email.current.value, password.current.value, isLogin);
+                user_handeler.login_or_register(username_email.current.value, password.current.value, isLogin)
+                .finally(()=>setLoading(prev=>!prev));
             }
             else if (username_email.current.value != "" && password.current.value != "" && username.current.value != "" && confirmPassword == password.current.value) {
+                setLoading(prev=>!prev);
                 console.log(username_email.current.value, password.current.value);
-                user_handeler.login_or_register(username_email.current.value, password.current.value, isLogin);
+                user_handeler.login_or_register(username_email.current.value, password.current.value, isLogin)
+                .finally(()=>setLoading(prev=>!prev));
             }
         }
     }
@@ -45,7 +50,7 @@ export default function () {
                 <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form className="space-y-6">
                         {!isLogin && <Input ref={username} htmlFor="username" label="Username" id="username" name="username" type="text" required autoComplete="username" className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />}
-                        <Input ref={username_email} htmlFor="email" label={isLogin?"Username/Email":"Email"} id="email" name="email" type={`${isLogin ? "text" : "email"}`} required autoComplete="email" className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        <Input ref={username_email} htmlFor="email" label={isLogin ? "Username/Email" : "Email"} id="email" name="email" type={`${isLogin ? "text" : "email"}`} required autoComplete="email" className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
 
                         <div>
                             <div className="flex items-center justify-between">
@@ -63,11 +68,19 @@ export default function () {
                         {!isLogin && <Input onChange={handleConfirmPasswordChange} htmlFor="confirm-password" label="Confirm Password" divStyle="mt-2 relative" inputType="password" isPassword={true} id="confirm-password" name="confirm-password" className={`p-2 block ${confirnPasswordStyle} w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`} />}
                         <div>
                             <button
+                            { ...{disabled: loading} }
                                 onClick={(event) => handleSubmit(event)}
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                {isLogin ? "Sign in" : "Sign up"}
+                                {loading ? <RotatingLines
+                                    width="24"
+                                    height="24"
+                                    strokeColor="white"
+                                    strokeWidth="5"
+                                    animationDuration="0.75"
+                                /> :
+                                    isLogin? "Sign in": "Sign up" }
                             </button>
                         </div>
                     </form>
