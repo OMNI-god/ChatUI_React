@@ -16,11 +16,11 @@ function App() {
   }
   return (
     <>
-      <Welcome />
-      {/* <div className="flex">
+      {/*<Welcome />*/}
+      <div className="flex">
         <Sidebar onSelect={handleChatSelect} isSelected={selectedChat.id}/>
         <Chat_window chat={selectedChat}/>
-      </div> */}
+      </div> 
     </>
   )
 }
