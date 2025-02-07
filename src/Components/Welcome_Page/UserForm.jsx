@@ -1,22 +1,29 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/display-name */
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { ReactComponent as MainIcon } from "../../assets/Main_Icon.jsx";
 import Input from "../Input/Input.jsx";
 import user_handeler from "../../util/user_handler.js";
 import { RotatingLines } from "react-loader-spinner";
+import userContext from "../../util/context.js";
+import Modal from "../Modal/Modal.jsx";
+import { useNavigate } from "react-router-dom";
 
-
+const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
 export default function () {
     const [isLogin, setIsLogin] = useState(true);
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
     let confirnPasswordStyle = "";
+    let errorText = "";
     const username_email = useRef("");
     const password = useRef("");
     const username = useRef("");
+    const user = useContext(userContext);
+    const navigate = useNavigate();
+
     function handleSubmit(event) {
         if (event.target.checkValidity()) {
             if (
@@ -32,6 +39,19 @@ export default function () {
                         password.current.value,
                         isLogin
                     )
+                    .then((response) => {
+                        if (response.httpCode == 200) {
+                            user.isLogin = true;
+                            user.username = !username_email.current.value.match(regex) ? username_email.current.value : response.payload.userName;
+                            user.user_email = username_email.current.value.match(regex) ? username_email.current.value : response.payload.userEmail;
+                            user.connectionID = response.payload.connectionID;
+                            navigate("/");
+                        }
+                        else {
+                            errorText = response.message;
+                            user.isLogin = false;
+                        }
+                    })
                     .finally(() => setLoading((prev) => !prev));
             } else if (
                 username_email.current.value != "" &&
@@ -66,6 +86,7 @@ export default function () {
     }
     return (
         <div className="flex items-center justify-center min-h-screen">
+            <Modal errorText={errorText} />
             <div className="border rounded-md shadow-sm flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <MainIcon className="justify-start" />
@@ -169,7 +190,6 @@ export default function () {
                         {isLogin ? "New User ? " : "Already registered ? "}
                         <a
                             onClick={() => setIsLogin(!isLogin)}
-                            href="#"
                             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                         >
                             {isLogin ? "Register Here" : "Login"}

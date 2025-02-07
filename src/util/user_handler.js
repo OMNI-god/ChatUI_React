@@ -22,7 +22,7 @@ const user_handler = {
             const response = await fetch(`${URL}/api/Users/${isLogin ? "Login" : "Register"}`, requestOptions);
             const result = await response.json();
             console.log(result);
-            return result;
+            return Promise.resolve(result);
         } catch (error) {
             console.error('Error:', error);
             throw error;

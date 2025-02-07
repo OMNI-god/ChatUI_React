@@ -8,7 +8,7 @@ import userContext from './util/context.js'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <userContext.Provider value={defaultConfig.user_details}>
-    <App />
+      <App />
     </userContext.Provider>
   </StrictMode>,
 )
