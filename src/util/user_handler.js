@@ -1,5 +1,5 @@
-import { URL } from "./default";
-
+import { URL_Cloud } from "./default";
+import { URL_local } from "./default";
 
 const user_handler = {
     login_or_register: async (username, password, isLogin) => {
@@ -19,7 +19,7 @@ const user_handler = {
         };
 
         try {
-            const response = await fetch(`${URL}/api/Users/${isLogin ? "Login" : "Register"}`, requestOptions);
+            const response = await fetch(`${URL_local}/api/Users/${isLogin ? "Login" : "Register"}`, requestOptions);
             const result = await response.json();
             console.log(result);
             return Promise.resolve(result);
