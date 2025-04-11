@@ -6,22 +6,21 @@ import chats from './util/chats'
 import { useState, useContext } from 'react'
 import Welcome from './Components/Welcome_Page/Welcome.jsx'
 import userContext from './util/context.js'
-import defaultConfig from './util/default.js'
 
 function App() {
   const [selectedChat, setSelectedChat] = useState(chats[0])
-  const [_user, setUser] = useState(defaultConfig.user_details)
+  const { user } = useContext(userContext);
 
   function handleChatSelect(chatID) {
     setSelectedChat(chats.find((chat) => chat.id === chatID))
   }
 
-  const user = useContext(userContext);
   return (
     <>
       {!user.isLogin ? <Welcome /> :
         <div className="flex flex-row h-screen bg-gray-100">
-          <Sidebar chats={chats} onChatSelect={handleChatSelect} />
+          <Sidebar isSelected={selectedChat.id} onSelect={handleChatSelect} />
+          <Chat_window chat={selectedChat} />
         </div>
       }
     </>

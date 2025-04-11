@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const defaultConfig = {
     user_details: {
         user_email: "",
@@ -5,6 +7,7 @@ const defaultConfig = {
         connectionID: "",
         isLogin: false,
         chats: []
+        
     }
 }
 

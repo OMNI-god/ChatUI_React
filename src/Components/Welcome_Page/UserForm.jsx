@@ -20,67 +20,79 @@ export default function () {
     const username_email = useRef("");
     const password = useRef("");
     const username = useRef("");
-    const user = useContext(userContext);
+    const { user, setUser } = useContext(userContext);
 
     function handleSubmit(event) {
-        if (event.target.checkValidity()) {
-            if (
-                isLogin &&
-                username_email.current.value != "" &&
-                password.current.value != ""
-            ) {
-                setLoading((prev) => !prev);
-                console.log(username_email.current.value, password.current.value);
-                user_handeler
-                    .login_or_register(
-                        username_email.current.value,
-                        password.current.value,
-                        isLogin
-                    )
-                    .then((response) => {
-                        if (response.httpCode == 200) {
-                            user.isLogin = true;
-                            user.username = !username_email.current.value.match(regex) ? username_email.current.value : response.payload.userName;
-                            user.user_email = username_email.current.value.match(regex) ? username_email.current.value : response.payload.userEmail;
-                            user.connectionID = response.payload.connectionID;
-                        }
-                        else {
-                            errorText = response.message;
-                            user.isLogin = false;
-                        }
-                    })
-                    .finally(() => {setLoading((prev) => !prev);
-                        //navigate to chat_window
-                    });
-            } else if (
-                username_email.current.value != "" &&
-                password.current.value != "" &&
-                username.current.value != "" &&
-                confirmPassword == password.current.value
-            ) {
-                setLoading((prev) => !prev);
-                console.log(username_email.current.value, password.current.value);
-                user_handeler
-                    .login_or_register(
-                        username_email.current.value,
-                        password.current.value,
-                        isLogin
-                    )
-                    .finally(() => setLoading((prev) => !prev));
-            }
+        event.preventDefault();
+
+        if (!event.target.checkValidity()) return;
+
+        const emailOrUsername = username_email.current.value;
+        const pwd = password.current.value;
+        const uname = username.current.value;
+
+        if (isLogin && emailOrUsername && pwd) {
+            setLoading(true);
+            user_handeler
+                .login_or_register(emailOrUsername, pwd, true)
+                .then((response) => {
+                    if (response.httpCode === 200) {
+                        setUser({
+                            ...user,
+                            isLogin: true,
+                            username: !emailOrUsername.match(regex)
+                                ? emailOrUsername
+                                : response.payload.userName,
+                            user_email: emailOrUsername.match(regex)
+                                ? emailOrUsername
+                                : response.payload.userEmail,
+                            connectionID: response.payload.connectionID,
+                        });
+                        setErrorText("");
+                    } else {
+                        setUser({ ...user, isLogin: false });
+                        setErrorText(response.message);
+                    }
+                })
+                .catch((err) => {
+                    console.error("Login Error:", err);
+                    setErrorText("Login failed. Try again.");
+                })
+                .finally(() => setLoading(false));
+        } else if (!isLogin && emailOrUsername && pwd && uname && confirmPassword === pwd) {
+            setLoading(true);
+            user_handeler
+                .login_or_register(emailOrUsername, pwd, false)
+                .then((response) => {
+                    if (response.httpCode === 200) {
+                        setUser({
+                            ...user,
+                            isLogin: true,
+                            username: response.payload.userName,
+                            user_email: response.payload.userEmail,
+                            connectionID: response.payload.connectionID,
+                        });
+                        setErrorText("");
+                    } else {
+                        setUser({ ...user, isLogin: false });
+                        setErrorText(response.message);
+                    }
+                })
+                .catch((err) => {
+                    console.error("Register Error:", err);
+                    setErrorText("Registration failed.");
+                })
+                .finally(() => setLoading(false));
         }
     }
+
     function handleConfirmPasswordChange(event) {
         setConfirmPassword(event.target.value);
     }
-    if (confirmPassword != password.current.value && !isLogin) {
+
+    if (confirmPassword && confirmPassword !== password.current.value && !isLogin) {
         confirnPasswordStyle = "bg-red-100";
-    }
-    if (
-        password.current.value != "" &&
-        confirmPassword == password.current.value &&
-        !isLogin
-    ) {
+    } else if (confirmPassword === password.current.value && !isLogin) {
         confirnPasswordStyle = "bg-green-100";
     }
     return (
