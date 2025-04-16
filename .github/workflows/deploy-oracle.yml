@@ -43,14 +43,15 @@ jobs:
             sudo chown -R $USER:$USER /home/ubuntu/ChatUI
             sudo chmod -R u+rw /home/ubuntu/ChatUI
 
-      - name: Stop ASP.NET Core service on Oracle VM
+      - name: Stop Node app on Oracle VM
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.ORACLE_VM_IP }}
           username: ${{ secrets.ORACLE_VM_USER }}
           key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
           script: |
-            pm2 stop ChatUI
+            pm2 list
+            pm2 stop ChatUI || echo "ChatUI not found"
 
       - name: Clean old files from target directory
         uses: appleboy/ssh-action@v1.0.0
