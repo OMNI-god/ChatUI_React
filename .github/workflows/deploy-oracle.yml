@@ -68,7 +68,7 @@ jobs:
           host: ${{ secrets.ORACLE_VM_IP }}
           username: ${{ secrets.ORACLE_VM_USER }}
           key: ${{ secrets.ORACLE_SSH_PRIVATE_KEY }}
-          source: "./publish/*"
+          source: "./dist/*"
           target: "/home/ubuntu/ChatUI"
           strip_components: 1
 
