@@ -1,42 +1,42 @@
-name: Deploy Frontend to Oracle Cloud VM
+name: Deploy to Oracle VM
 
 on:
   push:
     branches:
-      - main
+      - main  # or your deployment branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+    - name: Save SSH private key
+      run: |
+        echo "${{ secrets.ORACLE_SSH_PRIVATE_KEY }}" > oracle_key.pem
+        chmod 600 oracle_key.pem
 
-      - name: Install dependencies
-        run: npm install
+    - name: Zip release files
+      run: |
+        zip -r release.zip dist
 
-      - name: Build project
-        run: npm run build
+    - name: Upload release.zip to Oracle VM
+      run: |
+        scp -i oracle_key.pem -o StrictHostKeyChecking=no release.zip ${{ secrets.ORACLE_VM_USER }}@${{ secrets.ORACLE_VM_IP }}:/home/${{ secrets.ORACLE_VM_USER }}/release.zip
 
-      - name: Zip dist folder
-        run: zip -r release.zip dist
+    - name: SSH into Oracle VM and deploy app
+      run: |
+        ssh -i oracle_key.pem -o StrictHostKeyChecking=no ${{ secrets.ORACLE_VM_USER }}@${{ secrets.ORACLE_VM_IP }} << 'EOF'
+          sudo apt-get update
+          sudo apt-get install -y unzip
+          mkdir -p ~/chatapp
+          unzip -o ~/release.zip -d ~/chatapp
 
-      - name: Upload release zip to server and deploy
-        run: |
-          scp -i oracle_key.pem -o StrictHostKeyChecking=no release.zip ${{ secrets.ORACLE_VM_USER }}@${{ secrets.ORACLE_VM_IP }}:/home/${{ secrets.ORACLE_VM_USER }}/release.zip
+          # Optional: if using NGINX
+          # sudo cp -r ~/chatapp/dist/* /var/www/html/
 
-          ssh -i oracle_key.pem -o StrictHostKeyChecking=no ${{ secrets.ORACLE_VM_USER }}@${{ secrets.ORACLE_VM_IP }} << 'EOF'
-            sudo apt-get update
-            sudo apt-get install -y unzip
-            mkdir -p ~/chatapp
-            unzip -o ~/release.zip -d ~/chatapp
-
-            # If using NGINX, move the files to /var/www/html or other web root
-            # sudo cp -r ~/chatapp/dist/* /var/www/html/
-          EOF
+          # Optional: restart NGINX if needed
+          # sudo systemctl restart nginx
+        EOF
