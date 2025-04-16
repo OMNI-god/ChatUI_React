@@ -1,4 +1,4 @@
-name: Build and deploy Node.js app to Oracle Cloud - ChatAppUI
+name: Build and deploy Node.js app to Oracle Cloud VM - ChatAppUI
 
 on:
   push:
@@ -43,22 +43,32 @@ jobs:
         with:
           name: node-app
 
-      - name: Set up SSH key
+      - name: Upload release to Oracle Cloud VM
         run: |
           echo "${{ secrets.ORACLE_SSH_PRIVATE_KEY }}" > oracle_key.pem
           chmod 600 oracle_key.pem
 
-      - name: Copy artifact to Oracle Cloud VM
-        run: |
-          scp -i oracle_key.pem -o StrictHostKeyChecking=no release.zip ${{ secrets.ORACLE_VM_USER }}@${{ secrets.ORACLE_VM_IP }}:/home/${{ secrets.ORACLE_VM_USER }}/release.zip
+          scp -i oracle_key.pem -o StrictHostKeyChecking=no release.zip ${{ secrets.ORACLE_VM_USER }}@${{ secrets.ORACLE_VM_IP }}:~/release.zip
 
       - name: Deploy app on Oracle Cloud VM
         run: |
           ssh -i oracle_key.pem -o StrictHostKeyChecking=no ${{ secrets.ORACLE_VM_USER }}@${{ secrets.ORACLE_VM_IP }} << 'EOF'
+            # Install unzip if not present
+            sudo apt-get update
+            sudo apt-get install -y unzip
+
+            # Prepare and deploy app
+            mkdir -p ~/chatapp
             unzip -o ~/release.zip -d ~/chatapp
             cd ~/chatapp
+
+            # Install dependencies (skip dev deps for production)
             npm install --omit=dev
+
+            # Start/restart with PM2
             pm2 restart chatapp || pm2 start dist/index.js --name chatapp
+
+            # Save PM2 state and generate startup script
             pm2 save
             pm2 startup systemd -u $USER --hp $HOME
           EOF
