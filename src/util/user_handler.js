@@ -10,11 +10,10 @@ const user_handler = {
                 `${URL_local}/api/Users/${isLogin ? "Login" : "Register"}`,
                 { method: "POST", headers, body }
             );
-            if (!response.ok) throw new Error("Failed to fetch");
+            // if (!response.ok) throw new Error("Failed to fetch");
             return await response.json();
         } catch (error) {
-            console.error("Error:", error);
-            throw error;
+            console.log("Error:", error);
         }
     },
     getUser: async (email) => {
@@ -27,11 +26,10 @@ const user_handler = {
                 headers,
                 body,
             });
-            if (!response.ok) throw new Error("Failed to fetch");
+            // if (!response.ok) throw new Error("Failed to fetch");
             return await response.json();
         } catch (error) {
-            console.error("Error:", error);
-            throw error;
+            console.log("Error:", error);
         }
     },
 };
