@@ -1,113 +1,114 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react-refresh/only-export-components */
-/* eslint-disable react/display-name */
 import { useContext, useRef, useState } from "react";
 import { ReactComponent as MainIcon } from "../../assets/Main_Icon.jsx";
 import Input from "../Input/Input.jsx";
-import user_handeler from "../../util/user_handler.js";
+import user_handler from "../../util/user_handler.js";
 import { RotatingLines } from "react-loader-spinner";
 import userContext from "../../util/context.js";
 import Modal from "../Modal/Modal.jsx";
 
-const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-export default function () {
+export default function UserForm() {
     const [isLogin, setIsLogin] = useState(true);
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    let confirnPasswordStyle = "";
-    let errorText = "";
-    const username_email = useRef("");
-    const password = useRef("");
-    const username = useRef("");
+    const [errorText, setErrorText] = useState("");
+    const usernameEmailRef = useRef("");
+    const passwordRef = useRef("");
+    const usernameRef = useRef("");
+    const dialogRef = useRef();
     const { user, setUser } = useContext(userContext);
 
-    function handleSubmit(event) {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         if (!event.target.checkValidity()) return;
 
-        const emailOrUsername = username_email.current.value;
-        const pwd = password.current.value;
-        const uname = username.current.value;
+        const emailOrUsername = usernameEmailRef.current.value;
+        const password = passwordRef.current.value;
+        const username = usernameRef.current.value;
 
-        if (isLogin && emailOrUsername && pwd) {
-            setLoading(true);
-            user_handeler
-                .login_or_register(emailOrUsername, pwd, true)
-                .then((response) => {
-                    if (response.httpCode === 200) {
-                        setUser({
-                            ...user,
-                            isLogin: true,
-                            username: !emailOrUsername.match(regex)
-                                ? emailOrUsername
-                                : response.payload.userName,
-                            user_email: emailOrUsername.match(regex)
-                                ? emailOrUsername
-                                : response.payload.userEmail,
-                            connectionID: response.payload.connectionID,
-                        });
-                        setErrorText("");
-                    } else {
-                        setUser({ ...user, isLogin: false });
-                        setErrorText(response.message);
-                    }
-                })
-                .catch((err) => {
-                    console.error("Login Error:", err);
-                    setErrorText("Login failed. Try again.");
-                })
-                .finally(() => setLoading(false));
-        } else if (!isLogin && emailOrUsername && pwd && uname && confirmPassword === pwd) {
-            setLoading(true);
-            user_handeler
-                .login_or_register(emailOrUsername, pwd, false)
-                .then((response) => {
-                    if (response.httpCode === 200) {
-                        setUser({
-                            ...user,
-                            isLogin: true,
-                            username: response.payload.userName,
-                            user_email: response.payload.userEmail,
-                            connectionID: response.payload.connectionID,
-                        });
-                        setErrorText("");
-                    } else {
-                        setUser({ ...user, isLogin: false });
-                        setErrorText(response.message);
-                    }
-                })
-                .catch((err) => {
-                    console.error("Register Error:", err);
-                    setErrorText("Registration failed.");
-                })
-                .finally(() => setLoading(false));
+        if (isLogin && emailOrUsername && password) {
+            await handleLogin(emailOrUsername, password);
+        } else if (!isLogin && emailOrUsername && password && username && confirmPassword === password) {
+            await handleRegister(emailOrUsername, password, username);
+        } else {
+            setErrorText("Please fill all the fields correctly");
+            dialogRef.current.open();
         }
-    }
+    };
 
-    function handleConfirmPasswordChange(event) {
+    const handleLogin = async (emailOrUsername, password) => {
+        setLoading(true);
+        try {
+            const response = await user_handler.login_or_register(emailOrUsername, password, true);
+            if (response.httpCode === 200) {
+                setUser({
+                    ...user,
+                    isLogin: true,
+                    username: emailOrUsername.match(regex) ? response.payload.userName : emailOrUsername,
+                    user_email: emailOrUsername.match(regex) ? emailOrUsername : response.payload.userEmail,
+                    connectionID: response.payload.connectionID,
+                });
+                sessionStorage.setItem("refreshToken",response.payload.refreshToken); 
+            } else {
+                setErrorText("Login failed. Please try again.");
+                dialogRef.current.open();
+            }
+        } catch (error) {
+            console.error("Login Error:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleRegister = async (emailOrUsername, password, username) => {
+        setLoading(true);
+        try {
+            const response = await user_handler.login_or_register(emailOrUsername, password, false);
+            if (response.httpCode === 200) {
+                setUser({
+                    ...user,
+                    isLogin: true,
+                    username: response.payload.userName,
+                    user_email: response.payload.userEmail,
+                    connectionID: response.payload.connectionID,
+                });
+            } else {
+                setErrorText("Registration failed. Please try again.");
+                dialogRef.current.open();
+            }
+        } catch (error) {
+            console.error("Register Error:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleConfirmPasswordChange = (event) => {
         setConfirmPassword(event.target.value);
-    }
+    };
 
-    if (confirmPassword && confirmPassword !== password.current.value && !isLogin) {
-        confirnPasswordStyle = "bg-red-100";
-    } else if (confirmPassword === password.current.value && !isLogin) {
-        confirnPasswordStyle = "bg-green-100";
-    }
+    const confirmPasswordStyle =
+        confirmPassword && confirmPassword !== passwordRef.current.value && !isLogin
+            ? "bg-red-100"
+            : confirmPassword === passwordRef.current.value && !isLogin
+            ? "bg-green-100"
+            : "";
+
     return (
         <div className="flex items-center justify-center min-h-screen">
-            <Modal errorText={errorText} />
-            <div className="border rounded-md shadow-sm flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+            <Modal errorText={errorText} ref={dialogRef} />
+            <div className="border w-[33%] rounded-md shadow-sm flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <MainIcon className="justify-start" />
                 </div>
 
                 <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form className="space-y-6">
+                    <form className="space-y-6" onSubmit={handleSubmit}>
                         {!isLogin && (
                             <Input
-                                ref={username}
+                                ref={usernameRef}
                                 htmlFor="username"
                                 label="Username"
                                 id="username"
@@ -119,12 +120,12 @@ export default function () {
                             />
                         )}
                         <Input
-                            ref={username_email}
+                            ref={usernameEmailRef}
                             htmlFor="email"
                             label={isLogin ? "Username/Email" : "Email"}
                             id="email"
                             name="email"
-                            type={`${isLogin ? "text" : "email"}`}
+                            type={isLogin ? "text" : "email"}
                             required
                             autoComplete="email"
                             className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -138,19 +139,17 @@ export default function () {
                                 >
                                     Password
                                 </label>
-                                <div className="text-sm">
-                                    {isLogin && (
-                                        <a
-                                            href="#"
-                                            className="font-semibold text-indigo-600 hover:text-indigo-500"
-                                        >
-                                            Forgot password?
-                                        </a>
-                                    )}
-                                </div>
+                                {isLogin && (
+                                    <a
+                                        href="#"
+                                        className="font-semibold text-indigo-600 hover:text-indigo-500"
+                                    >
+                                        Forgot password?
+                                    </a>
+                                )}
                             </div>
                             <Input
-                                ref={password}
+                                ref={passwordRef}
                                 htmlFor="password"
                                 divStyle="mt-2 relative"
                                 inputType="password"
@@ -170,13 +169,12 @@ export default function () {
                                 isPassword={true}
                                 id="confirm-password"
                                 name="confirm-password"
-                                className={`p-2 block ${confirnPasswordStyle} w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
+                                className={`p-2 block ${confirmPasswordStyle} w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
                             />
                         )}
                         <div>
                             <button
-                                {...{ disabled: loading }}
-                                onClick={(event) => handleSubmit(event)}
+                                disabled={loading}
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
@@ -198,10 +196,10 @@ export default function () {
                     </form>
 
                     <p className="mt-5 text-center text-sm text-gray-500">
-                        {isLogin ? "New User ? " : "Already registered ? "}
+                        {isLogin ? "New User? " : "Already registered? "}
                         <a
                             onClick={() => setIsLogin(!isLogin)}
-                            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 cursor-pointer"
                         >
                             {isLogin ? "Register Here" : "Login"}
                         </a>
