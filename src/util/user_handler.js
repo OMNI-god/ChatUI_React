@@ -1,4 +1,4 @@
-import { URL_Cloud, URL_local } from "./default";
+import { URL_Cloud, URL_Cloud_Oracle, URL_local } from "./default";
 
 const user_handler = {
     login_or_register: async (username, password, isLogin) => {
@@ -7,7 +7,7 @@ const user_handler = {
 
         try {
             const response = await fetch(
-                `${URL_local}/api/Users/${isLogin ? "Login" : "Register"}`,
+                `${URL_Cloud_Oracle}/api/Users/${isLogin ? "Login" : "Register"}`,
                 { method: "POST", headers, body }
             );
             // if (!response.ok) throw new Error("Failed to fetch");
@@ -21,7 +21,7 @@ const user_handler = {
         const body = JSON.stringify({ email });
 
         try {
-            const response = await fetch(`${URL_local}/api/Users/GetUser`, {
+            const response = await fetch(`${URL_Cloud_Oracle}/api/Users/GetUser`, {
                 method: "POST",
                 headers,
                 body,
