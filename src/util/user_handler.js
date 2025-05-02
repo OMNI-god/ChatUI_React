@@ -20,18 +20,18 @@ const user_handler = {
     const headers = { "Content-Type": "application/json" };
     const body = JSON.stringify({ email });
 
-    try {
-      const response = await fetch(`${URL_Cloud_oracle}/api/Users/GetUser`, {
-        method: "POST",
-        headers,
-        body,
-      });
-      // if (!response.ok) throw new Error("Failed to fetch");
-      return await response.json();
-    } catch (error) {
-      console.log("Error:", error);
-    }
-  },
+        try {
+            const response = await fetch(`${URL_local}/api/Users/GetUser`, {
+                method: "POST",
+                headers,
+                body,
+            });
+            // if (!response.ok) throw new Error("Failed to fetch");
+            return await response.json();
+        } catch (error) {
+            console.log("Error:", error);
+        }
+    },
 };
 
 export default user_handler;
