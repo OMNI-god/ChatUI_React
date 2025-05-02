@@ -50,7 +50,7 @@ export default function UserForm() {
                     user_email: emailOrUsername.match(regex) ? emailOrUsername : response.payload.userEmail,
                     connectionID: response.payload.connectionID,
                 });
-                sessionStorage.setItem("refreshToken",response.payload.refreshToken); 
+                sessionStorage.setItem("refreshToken", response.payload.refreshToken);
             } else {
                 setErrorText("Login failed. Please try again.");
                 dialogRef.current.open();
@@ -93,13 +93,13 @@ export default function UserForm() {
         confirmPassword && confirmPassword !== passwordRef.current.value && !isLogin
             ? "bg-red-100"
             : confirmPassword === passwordRef.current.value && !isLogin
-            ? "bg-green-100"
-            : "";
+                ? "bg-green-100"
+                : "";
 
     return (
-        <div className="flex items-center justify-center min-h-screen">
+        <div className="flex items-center justify-center  min-h-screen">
             <Modal errorText={errorText} ref={dialogRef} />
-            <div className="border w-[33%] rounded-md shadow-sm flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+            <div className="border sm:w-full md:w:w-[33%] lg:w-[25%] rounded-md shadow-sm flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <MainIcon className="justify-start" />
                 </div>
