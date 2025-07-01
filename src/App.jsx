@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import './App.css'
-import Sidebar from './components/Sidebar/Sidebar';
+import Sidebar from './Components/Sidebar/Sidebar';
 import ChatWindow from './components/ChatWindow/ChatWindow';
 
 function App() {
