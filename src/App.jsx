@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import './App.css'
 import Sidebar from './Components/Sidebar/Sidebar';
-import ChatWindow from './components/ChatWindow/ChatWindow';
+import ChatWindow from './Components/ChatWindow/ChatWindow';
 
 function App() {
   const [user, setUser] = useState();
