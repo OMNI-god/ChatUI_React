@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useState } from "react";
 import { messages } from "../../utils/dummy_data.js";
-import ChatList from "../../components/Sidebar/ChatList.jsx";
-import SearchBar from "../../components/Sidebar/SearchBar.jsx";
+import ChatList from "./ChatList.jsx";
+import SearchBar from "./SearchBar.jsx";
 
 function reducer(state, action) {
     switch (action.type) {

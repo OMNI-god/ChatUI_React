@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import './App.css'
-import Sidebar from './Components/Sidebar/Sidebar';
-import ChatWindow from './Components/ChatWindow/ChatWindow';
+import Sidebar from './components/Sidebar-Component/Sidebar';
+import ChatWindow from './components/ChatWindow-Component/ChatWindow';
 
 function App() {
   const [user, setUser] = useState();
