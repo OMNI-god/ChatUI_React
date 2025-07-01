@@ -2,7 +2,7 @@ export default function ChatHeader({ user }) {
   return (
     <>
       {user && (
-        <nav className="flex items-center border shadow-sm rounded-md p-1 bg-stone-100">
+        <nav className="flex items-center border shadow-sm rounded-md p-1 my-2 bg-stone-100">
           <img
             src={user.profile_pic}
             alt={user.sender}
