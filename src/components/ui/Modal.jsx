@@ -22,5 +22,5 @@ export default function Modal({ isOpen, children }) {
   const container = document.getElementById("modal");
   if (!container) return null;
 
-  return createPortal(<dialog ref={dialogRef} className="w-3/6 h-4/6 rounded-md border border-gray-100 shadow-md">{children}</dialog>, container);
+  return createPortal(<dialog className="rounded-md shadow-md" ref={dialogRef}>{children}</dialog>, container);
 }

@@ -18,15 +18,24 @@ export default function ChatHeader({ user }) {
             <p>3 dot</p>
           </div>
           <Modal isOpen={viewPic}>
-            <div className="m-3 flex-1 justify-center">
-              <p className="font-extrabold">{user.sender}</p>
-              <img
-                src={user.profile_pic}
-                alt={user.sender}
-                className="w-[40%] h-[1%] rounded-md"
-                onClick={() => setViewPic(true)}
-              />
-              <button className="p-2 bg-red-500 rounded-md m-2" onClick={() => setViewPic(false)}>Close</button>
+            <div className="m-3 flex flex-col">
+              <p className="font-extrabold mb-4 bg-slate-100 shadow-md p-2">
+                {user.sender}
+              </p>
+              <div className="flex flex-col items-center max-h-full">
+                <img
+                  src={user.profile_pic}
+                  alt={user.sender}
+                  className="w-full rounded-md mb-4"
+                  onClick={() => setViewPic(true)}
+                />
+              </div>
+              <button
+                className="p-2 bg-red-500 text-white rounded-md"
+                onClick={() => setViewPic(false)}
+              >
+                Close
+              </button>
             </div>
           </Modal>
         </nav>
