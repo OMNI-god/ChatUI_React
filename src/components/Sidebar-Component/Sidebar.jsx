@@ -48,7 +48,7 @@ export default function Sidebar({ selectUser }) {
         <ReactComponent />
         <SearchBar searchValue={sidebarState.searchValue} dispatch={dispatch} />
       </div>
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto scroll-smooth no-scrollbar">
         <ChatList chats={sidebarState.chats} selectUser={selectUser} />
       </div>
     </div>

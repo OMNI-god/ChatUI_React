@@ -59,7 +59,7 @@ export default function UserChat({ user }) {
       </div>
       <div className="flex items-center">
         <textarea
-          className="w-full border rounded-lg resize-none p-2 overflow-y sc"
+          className="w-full border rounded-lg resize-none p-2 overflow-y slim-scrollbar"
           placeholder="Type a message..."
           value={message}
           onChange={handleChange}
