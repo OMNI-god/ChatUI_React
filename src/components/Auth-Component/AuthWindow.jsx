@@ -3,7 +3,7 @@ import AuthForm from "./AuthForm";
 
 export default function AuthWindow() {
   const [isLogin, setIsLogin] = useState(true);
-
+  
   return (
     <div className="w-screen h-screen flex overflow-hidden relative">
       <div

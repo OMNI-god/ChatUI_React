@@ -11,7 +11,7 @@ function App() {
   const [user, setUser] = useState();
   return (
     <>
-      {isLoggedIn ? (
+      {!isLoggedIn ? (
         <AuthWindow />
       ) : (
         <div className="h-screen flex">
