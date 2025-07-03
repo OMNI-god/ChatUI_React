@@ -1,11 +1,16 @@
 import { useSelector } from "react-redux";
 import CircleLoader from "../ui/Loading-Animations";
+import { useActionState } from "react";
+
+function auth(){
+  
+}
 
 export default function AuthForm({ isLogin, setIsLogin }) {
-  const isLoading = !useSelector((state) => state.auth.isLoading);
-
+  const isLoading = useSelector((state) => state.auth.isLoading);
+  const[state,formAction]=useActionState(auth,{})
   return (
-    <form className="m-3 w-4/6 bg-slate-100 p-2 rounded-md shadow-lg">
+    <form action={formAction} className="m-3 w-4/6 bg-slate-100 p-2 rounded-md shadow-lg">
       <h1 className="font-extrabold h- text-purple-600 m-2">
         {isLogin ? "Login" : "Register"}
       </h1>
@@ -73,7 +78,9 @@ export default function AuthForm({ isLogin, setIsLogin }) {
         </p>
         <button
           disabled={isLoading}
-          className="relative p-2 bg-blue-600 rounded-md shadow-slate-100 text-white hover:bg-blue-400 overflow-hidden"
+          className={`relative p-2 bg-blue-600 rounded-md shadow-slate-100 text-white ${
+            !isLoading && "hover:bg-blue-400"
+          } overflow-hidden`}
         >
           {/* Text */}
           <span className={isLoading ? "opacity-50" : "opacity-100"}>
@@ -83,7 +90,7 @@ export default function AuthForm({ isLogin, setIsLogin }) {
           {/* Overlay spinner */}
           {isLoading && (
             <div className="w-full absolute inset-0 flex items-center justify-center">
-              <CircleLoader />
+              <CircleLoader width="30" height="30" />
             </div>
           )}
         </button>
