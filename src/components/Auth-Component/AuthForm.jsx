@@ -1,16 +1,28 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CircleLoader from "../ui/Loading-Animations";
-import { useActionState } from "react";
+import { authActions, user_service } from "../../strore/AuthSlice";
 
-function auth(){
-  
+const initialState = {
+  username_email: "",
+  username: "",
+  email: "",
+  password: "",
+  confirmPassword: ""
+}
+
+function authentication(event) {
+  event.preventDefaults();
+
 }
 
 export default function AuthForm({ isLogin, setIsLogin }) {
   const isLoading = useSelector((state) => state.auth.isLoading);
-  const[state,formAction]=useActionState(auth,{})
+  const dispatch = useDispatch();
+
+  const [] = dispatch(user_service())
+
   return (
-    <form action={formAction} className="m-3 w-4/6 bg-slate-100 p-2 rounded-md shadow-lg">
+    <form onSubmit={authentication} className="m-3 w-4/6 bg-slate-100 p-2 rounded-md shadow-lg">
       <h1 className="font-extrabold h- text-purple-600 m-2">
         {isLogin ? "Login" : "Register"}
       </h1>
@@ -78,9 +90,8 @@ export default function AuthForm({ isLogin, setIsLogin }) {
         </p>
         <button
           disabled={isLoading}
-          className={`relative p-2 bg-blue-600 rounded-md shadow-slate-100 text-white ${
-            !isLoading && "hover:bg-blue-400"
-          } overflow-hidden`}
+          className={`relative p-2 bg-blue-600 rounded-md shadow-slate-100 text-white ${!isLoading && "hover:bg-blue-400"
+            } overflow-hidden`}
         >
           {/* Text */}
           <span className={isLoading ? "opacity-50" : "opacity-100"}>
