@@ -7,22 +7,30 @@ const initialState = {
   username: "",
   email: "",
   password: "",
-  confirmPassword: ""
-}
-
-function authentication(event) {
-  event.preventDefaults();
-
-}
+};
 
 export default function AuthForm({ isLogin, setIsLogin }) {
   const isLoading = useSelector((state) => state.auth.isLoading);
   const dispatch = useDispatch();
 
-  const [] = dispatch(user_service())
+  function handleSubmit(event) {
+    event.preventDefault();
+    const fd = new FormData(event.target);
+    const data = Object.fromEntries(fd.entries());
+    const config = {
+      method: "POST",
+      credentials:"include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    };
+    dispatch(user_service("https://localhost:7038/api/Users/Login", config));
+  }
 
   return (
-    <form onSubmit={authentication} className="m-3 w-4/6 bg-slate-100 p-2 rounded-md shadow-lg">
+    <form
+      onSubmit={handleSubmit}
+      className="m-3 w-4/6 bg-slate-100 p-2 rounded-md shadow-lg"
+    >
       <h1 className="font-extrabold h- text-purple-600 m-2">
         {isLogin ? "Login" : "Register"}
       </h1>
@@ -90,8 +98,9 @@ export default function AuthForm({ isLogin, setIsLogin }) {
         </p>
         <button
           disabled={isLoading}
-          className={`relative p-2 bg-blue-600 rounded-md shadow-slate-100 text-white ${!isLoading && "hover:bg-blue-400"
-            } overflow-hidden`}
+          className={`relative p-2 bg-blue-600 rounded-md shadow-slate-100 text-white ${
+            !isLoading && "hover:bg-blue-400"
+          } overflow-hidden`}
         >
           {/* Text */}
           <span className={isLoading ? "opacity-50" : "opacity-100"}>
