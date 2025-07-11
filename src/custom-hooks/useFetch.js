@@ -1,27 +1,33 @@
 import { useCallback, useEffect, useState } from "react";
 import { apiCall } from "../APICalls/APICall";
 
-export default function useFetch(initialData,url,config){
-    const [data,setData]=useState(initialData);
-    const [isLoading,setIsLoading]=useState(false);
-    const [error,setError]=useState();
+export default function useFetch(initialData, url, config,skip=false) {
+    const [data, setData] = useState(initialData);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
 
-    const fetchCall=useCallback(async()=>apiCall(url,config),[url,config]);
+    const fetchCall = useCallback(async () => await apiCall(url, config), [url, config]);
 
-    useEffect(async ()=>{
-        try{
-            setIsLoading(true);
-            //api call
-            const response=await fetchCall();
-            setData(response.data);
+    useEffect(() => {
+        if(skip){
+            return;
         }
-        catch(error){
-            setError({message:error.message||"Failed to fetch data"})
+        async function fetchData(){
+            try {
+                setIsLoading(true);
+                //api call
+                const response = await fetchCall();
+                setData(response);
+            }
+            catch (error) {
+                setError({ message: error.message || "Failed to fetch data" })
+            }
+            finally {
+                setIsLoading(false);
+            }
         }
-        finally{
-            setIsLoading(false);
-        }
-    },[fetchCall]);
+        fetchData();
+    }, [fetchCall,skip]);
 
     return {
         data,

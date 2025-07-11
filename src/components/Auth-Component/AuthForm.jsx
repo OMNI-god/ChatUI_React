@@ -1,16 +1,36 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CircleLoader from "../ui/Loading-Animations";
-import { useActionState } from "react";
+import { authActions, user_service } from "../../strore/AuthSlice";
 
-function auth(){
-  
-}
+const initialState = {
+  username_email: "",
+  username: "",
+  email: "",
+  password: "",
+};
 
 export default function AuthForm({ isLogin, setIsLogin }) {
   const isLoading = useSelector((state) => state.auth.isLoading);
-  const[state,formAction]=useActionState(auth,{})
+  const dispatch = useDispatch();
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    const fd = new FormData(event.target);
+    const data = Object.fromEntries(fd.entries());
+    const config = {
+      method: "POST",
+      credentials:"include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    };
+    dispatch(user_service("https://localhost:7038/api/Users/Login", config));
+  }
+
   return (
-    <form action={formAction} className="m-3 w-4/6 bg-slate-100 p-2 rounded-md shadow-lg">
+    <form
+      onSubmit={handleSubmit}
+      className="m-3 w-4/6 bg-slate-100 p-2 rounded-md shadow-lg"
+    >
       <h1 className="font-extrabold h- text-purple-600 m-2">
         {isLogin ? "Login" : "Register"}
       </h1>
