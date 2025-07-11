@@ -21,7 +21,7 @@ jobs:
 
       - name: Install dependencies and build
         run: |
-          npm install
+          npm ci
           npm run build --if-present
 
       - name: Upload built files to Oracle Cloud VM
@@ -50,12 +50,15 @@ jobs:
             # Clean old files from web root
             sudo rm -rf /var/www/html/*
 
-            # Move new files
+            # Move new files from temporary folder
             sudo cp -r /home/ubuntu/ChatUI/* /var/www/html/
 
             # Set correct permissions
             sudo chown -R www-data:www-data /var/www/html
             sudo chmod -R 755 /var/www/html
+
+            # Optionally clean up temporary folder
+            sudo rm -rf /home/ubuntu/ChatUI/*
 
             # Restart NGINX
             sudo systemctl restart nginx
