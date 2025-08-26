@@ -2,29 +2,38 @@
   width: 100vw;
   height: 100vh;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  overflow: hidden;
+  grid-template-columns: 1fr 1fr; /* two equal columns */
 }
+
+/* Left panel stays as is */
 .leftPanel {
   background-color: aquamarine;
 }
+
+/* Right panel centers its content */
 .rightPanel {
   background-color: aqua;
-  display: grid;
+  display: flex;
+  justify-content: center; /* horizontal centering */
+  align-items: center; /* vertical centering */
 }
+
+/* Form wrapper (optional size) */
 .formWrapper {
-  justify-self: center;
-  align-self: center;
-  height: 40%;
   width: 40%;
+  height: 40%;
 }
+
 @media (max-width: 34em) {
   .container {
-    width: 100vw;
+    width: 100vh;
     height: 100vh;
     display: grid;
-    grid-template-columns: 0fr 1fr;
+    grid-template-columns: 1fr 1fr;
     overflow: hidden;
+  }
+  .leftPanel {
+    display: none;
   }
   .rightPanel {
     background-color: aqua;
