@@ -74,7 +74,7 @@ export default function AuthForm({ isLogin, setIsLogin }) {
           {isLogin ? "Register" : "Login"}
         </p>
         <button disabled={isLoading}>
-          <span className={isLoading ? "opacity-50" : "opacity-100"}>
+          <span className={`${isLoading ? "opacity-50" : "opacity-100"}`}>
             {isLogin ? "Login" : "Register"}
           </span>
           {isLoading && (
