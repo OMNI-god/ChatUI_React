@@ -1,0 +1,50 @@
+.userForm {
+  background-color: aliceblue;
+  border-radius: 1rem;
+  padding: 1.2rem 1.2rem;
+  box-shadow: 0rem 1.2rem 3.2rem rgba(0, 0, 0, 0.226);
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* vertical spacing between all input groups */
+  width: 100%;
+  max-width: 400px;
+}
+
+.fields > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* spacing between label and input */
+}
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.fields div input {
+  width: 100%;
+  padding: 0.8rem 0.8rem;
+  border: 1px solid #aaa;
+  border-radius: 9px;
+}
+.formHeading {
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+.fields div label {
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+.actions > * {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+.fields div input :focus {
+  outline: none;
+}
+
+@media (max-width: 34em) {
+}
