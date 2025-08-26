@@ -1,0 +1,39 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+.leftPanel {
+  background-color: aquamarine;
+}
+.rightPanel {
+  background-color: aqua;
+  display: grid;
+}
+.formWrapper {
+  justify-self: center;
+  align-self: center;
+  height: 40%;
+  width: 40%;
+}
+@media (max-width: 34em) {
+  .container {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 0fr 1fr;
+    overflow: hidden;
+  }
+  .rightPanel {
+    background-color: aqua;
+    display: grid;
+  }
+  .formWrapper {
+    justify-self: center;
+    align-self: center;
+    height: 70%;
+    width: 70%;
+  }
+}

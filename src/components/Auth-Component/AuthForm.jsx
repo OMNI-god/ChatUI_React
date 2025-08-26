@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import CircleLoader from "../ui/Loading-Animations";
 import { authActions, user_service } from "../../strore/AuthSlice";
+import styles from "./AuthForm.module.css";
 
 const initialState = {
   username_email: "",
@@ -19,7 +20,7 @@ export default function AuthForm({ isLogin, setIsLogin }) {
     const data = Object.fromEntries(fd.entries());
     const config = {
       method: "POST",
-      credentials:"include",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     };
@@ -29,7 +30,7 @@ export default function AuthForm({ isLogin, setIsLogin }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="m-3 w-4/6 bg-slate-100 p-2 rounded-md shadow-lg"
+      className={`bg-slate-100 p-2 rounded-md shadow-lg ${styles.form}`}
     >
       <h1 className="font-extrabold h- text-purple-600 m-2">
         {isLogin ? "Login" : "Register"}
