@@ -2,29 +2,39 @@
   width: 100vw;
   height: 100vh;
   display: grid;
-  grid-template-columns: 1fr 1fr; /* two equal columns */
+  grid-template-columns: 1fr 1fr;
 }
-
-/* Left panel stays as is */
 .leftPanel {
   background-color: aquamarine;
 }
-
-/* Right panel centers its content */
 .rightPanel {
   background-color: aqua;
   display: flex;
-  justify-content: center; /* horizontal centering */
-  align-items: center; /* vertical centering */
+  justify-content: center;
+  align-items: center;
 }
-
-/* Form wrapper (optional size) */
+.leftPanel,
+.rightPanel {
+  transition: background-color 0.5s ease;
+}
 .formWrapper {
-  width: 50%;
-  height: 50%;
+  width: 60%;
+  height: 60%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.leftLogin {
+  background-color: aquamarine;
+}
+.leftSignup {
+  background-color: aqua;
+}
+.rightLogin {
+  background-color: aqua;
+}
+.rightSignup {
+  background-color: aquamarine;
 }
 
 @media (max-width: 34em) {
