@@ -73,7 +73,10 @@ export default function AuthForm({ isLogin, setIsLogin }) {
         <p onClick={() => setIsLogin((prev) => !prev)}>
           {isLogin ? "Register" : "Login"}
         </p>
-        <button disabled={isLoading}>
+        <button
+          disabled={isLoading}
+          className={`${isLogin ? "bg-[#91a7ff]" : "bg-[#b197fc]"}`}
+        >
           <span className={`${isLoading ? "opacity-50" : "opacity-100"}`}>
             {isLogin ? "Login" : "Register"}
           </span>
