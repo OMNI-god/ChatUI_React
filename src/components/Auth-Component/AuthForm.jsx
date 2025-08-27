@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CircleLoader from "../ui/Loading-Animations";
 import { authActions, user_service } from "../../strore/AuthSlice";
 import styles from "./AuthForm.module.css";
+import Modal from "../ui/Modal";
 
 const initialState = {
   username_email: "",
@@ -12,6 +13,7 @@ const initialState = {
 
 export default function AuthForm({ isLogin, setIsLogin }) {
   const isLoading = useSelector((state) => state.auth.isLoading);
+  const error = useSelector((state) => state.auth.error);
   const dispatch = useDispatch();
 
   function handleSubmit(event) {
@@ -26,67 +28,80 @@ export default function AuthForm({ isLogin, setIsLogin }) {
     };
     dispatch(user_service("https://localhost:7038/api/Users/Login", config));
   }
-
+  console.log(error);
   return (
-    <form onSubmit={handleSubmit} className={styles.userForm}>
-      <h1 className={styles.formHeading}>{isLogin ? "Login" : "Register"}</h1>
+    <>
+      {error && (
+        <Modal isOpen={error != null}>
+          <p>{error}</p>
+        </Modal>
+      )}
+      <form onSubmit={handleSubmit} className={styles.userForm}>
+        <h1
+          className={`${styles.formHeading} ${
+            isLogin ? "text-[#4c6ef5]" : "text-[#7950f2]"
+          }`}
+        >
+          {isLogin ? "Login" : "Register"}
+        </h1>
 
-      <div className={styles.fields}>
-        <div>
-          <label htmlFor={`${isLogin ? "username_email" : "username"}`}>
-            {isLogin ? "Username/Email" : "Username"}
-          </label>
-          <input
-            name={`${isLogin ? "username_email" : "username"}`}
-            id={`${isLogin ? "username_email" : "username"}`}
-            type="text"
-            required
-          />
-        </div>
-
-        {!isLogin && (
+        <div className={styles.fields}>
           <div>
-            <label htmlFor="email">Email</label>
-            <input name="email" id="email" type="email" required />
-          </div>
-        )}
-
-        <div>
-          <label htmlFor="password">Password</label>
-          <input name="password" id="password" type="password" required />
-        </div>
-
-        {!isLogin && (
-          <div>
-            <label htmlFor="confirmPassword">Confirm Password</label>
+            <label htmlFor={`${isLogin ? "username_email" : "username"}`}>
+              {isLogin ? "Username/Email" : "Username"}
+            </label>
             <input
-              name="confirmPassword"
-              id="confirmPassword"
-              type="password"
+              name={`${isLogin ? "username_email" : "username"}`}
+              id={`${isLogin ? "username_email" : "username"}`}
+              type="text"
               required
             />
           </div>
-        )}
-      </div>
 
-      <div className={styles.actions}>
-        <p onClick={() => setIsLogin((prev) => !prev)}>
-          {isLogin ? "Register" : "Login"}
-        </p>
-        <button
-          disabled={isLoading}
-          className={`${isLogin ? "bg-[#91a7ff]" : "bg-[#b197fc]"}`}
-        >
-          <span className={`${isLoading ? "opacity-50" : "opacity-100"}`}>
-            {isLogin ? "Login" : "Register"}
-          </span>
-          {isLoading && (
-            <div className="w-full absolute inset-0 flex items-center justify-center">
-              <CircleLoader width="30" height="30" />
+          {!isLogin && (
+            <div>
+              <label htmlFor="email">Email</label>
+              <input name="email" id="email" type="email" required />
             </div>
           )}
-        </button>
-      </div>
-    </form>
+
+          <div>
+            <label htmlFor="password">Password</label>
+            <input name="password" id="password" type="password" required />
+          </div>
+
+          {!isLogin && (
+            <div>
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <input
+                name="confirmPassword"
+                id="confirmPassword"
+                type="password"
+                required
+              />
+            </div>
+          )}
+        </div>
+
+        <div className={styles.actions}>
+          <p onClick={() => setIsLogin((prev) => !prev)}>
+            {isLogin ? "Register" : "Login"}
+          </p>
+          <button
+            disabled={isLoading}
+            className={`${isLogin ? "bg-[#91a7ff]" : "bg-[#b197fc]"}`}
+          >
+            <span className={`${isLoading ? "opacity-50" : "opacity-100"}`}>
+              {isLogin ? "Login" : "Register"}
+            </span>
+            {isLoading && (
+              <div className=" w-full absolute inset-0 flex items-center justify-center">
+                <CircleLoader width="30" height="30" />
+              </div>
+            )}
+          </button>
+        </div>
+      </form>
+    </>
   );
 }
