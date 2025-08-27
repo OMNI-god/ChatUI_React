@@ -76,7 +76,7 @@
   padding: 1rem 0.8rem;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .userForm {
     padding: 1rem;
   }
@@ -90,4 +90,39 @@
   .actions button {
     font-size: 1.5rem;
   }
+} */
+
+@media (min-width: 15em) {
+  .userForm {
+    padding: 0.8rem;
+  }
+  .fields div input {
+    font-size: 1rem;
+  }
+  .formHeading {
+    font-size: 2rem;
+  }
+  .actions p,
+  .actions button {
+    font-size: 1.2rem;
+  }
+  .fields div label {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+}
+@media (min-width: 30em) {
+}
+
+@media (min-width: 48em) {
+}
+
+@media (min-width: 62em) {
+}
+
+@media (min-width: 75em) {
+}
+@media (min-width: 88em) {
+}
+@media (min-width: 100em) {
 }

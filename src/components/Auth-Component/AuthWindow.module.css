@@ -36,23 +36,76 @@
 .rightSignup {
   background-color: aquamarine;
 }
-
-@media (max-width: 34em) {
+@media (min-width: 15em) {
   .container {
     width: 100vw;
     height: 100vh;
     display: grid;
     grid-template-columns: 1fr;
-    overflow: hidden;
   }
   .leftPanel {
     display: none;
   }
-  .rightPanel {
-    background-color: aqua;
+  .formWrapper {
+    width: 90%;
+  }
+}
+@media (min-width: 30em) {
+  .container {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .leftPanel {
+    display: none;
   }
   .formWrapper {
-    height: 80%;
-    width: 80%;
+    width: 60%;
+  }
+}
+
+@media (min-width: 48em) {
+  .container {
+    grid-template-columns: 1fr 1fr;
+  }
+  .leftPanel {
+    display: block;
+  }
+  .formWrapper {
+    width: 70%;
+  }
+}
+
+@media (min-width: 62em) {
+  .container {
+    grid-template-columns: 1fr 1fr;
+  }
+  .leftPanel {
+    display: block;
+  }
+  .formWrapper {
+    width: 60%;
+  }
+}
+
+@media (min-width: 75em) {
+  .formWrapper {
+    width: 50%;
+  }
+}
+
+@media (min-width: 88em) {
+  .formWrapper {
+    width: 50%;
+  }
+}
+
+@media (min-width: 100em) {
+  .container {
+    grid-template-columns: 1.5fr 1fr;
+  }
+  .formWrapper {
+    width: 50%;
   }
 }
