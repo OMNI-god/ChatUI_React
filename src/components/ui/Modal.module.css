@@ -1,20 +1,81 @@
 .uiDialogBox {
-  width: 50%;
-  height: 50%;
+  width: min(90%, 420px);
+  max-height: 85vh;
+  padding: 0;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(to bottom, #ffffff, #f9f9f9);
   display: grid;
-  gap: 1.6rem;
-
   align-self: center;
   justify-self: center;
-  border: 1.2rem 2.4rem;
+  grid-template-rows: auto 1fr auto;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+  animation: slideFadeIn 0.35s ease-out;
+  position: relative;
 }
-.uiDialogBox > * {
-  padding: 1.6rem 2.4rem;
+
+/* Dark overlay for the backdrop */
+.uiDialogBox::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+  animation: backdropFade 0.3s ease-out;
 }
-.uiDialogBox button {
-  align-items: end;
-}
+
+/* Content section */
 .children {
-  justify-items: center;
-  align-content: center;
+  padding: 2rem 2.4rem;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #222;
+  line-height: 1.5;
+}
+
+/* Close button styled nicely */
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #ef4444;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  margin: 1rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease, transform 0.2s ease;
+}
+
+.closeButton:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+.icon {
+  height: 1.6rem;
+  width: 1.6rem;
+}
+
+/* Animations */
+@keyframes slideFadeIn {
+  from {
+    transform: translateY(-20px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes backdropFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

@@ -26,7 +26,9 @@ export default function AuthForm({ isLogin, setIsLogin }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     };
-    dispatch(user_service("https://localhost:7038/api/Users/Login", config));
+    dispatch(
+      user_service("http://140.245.252.36:5002/api/Users/Login", config)
+    );
   }
   console.log(error);
   return (
