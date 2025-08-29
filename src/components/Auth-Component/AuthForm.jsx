@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import CircleLoader from "../ui/Loading-Animations";
-import { authActions, user_service } from "../../strore/AuthSlice";
+import authSlice, { authActions, user_service } from "../../strore/AuthSlice";
 import styles from "./AuthForm.module.css";
 import Modal from "../ui/Modal";
 
@@ -32,7 +32,10 @@ export default function AuthForm({ isLogin, setIsLogin }) {
   return (
     <>
       {error && (
-        <Modal isOpen={error != null}>
+        <Modal
+          isOpen={error != null}
+          callBack={() => dispatch(authActions.setError(null))}
+        >
           <p>{error}</p>
         </Modal>
       )}

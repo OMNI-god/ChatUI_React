@@ -1,0 +1,20 @@
+.uiDialogBox {
+  width: 50%;
+  height: 50%;
+  display: grid;
+  gap: 1.6rem;
+
+  align-self: center;
+  justify-self: center;
+  border: 1.2rem 2.4rem;
+}
+.uiDialogBox > * {
+  padding: 1.6rem 2.4rem;
+}
+.uiDialogBox button {
+  align-items: end;
+}
+.children {
+  justify-items: center;
+  align-content: center;
+}

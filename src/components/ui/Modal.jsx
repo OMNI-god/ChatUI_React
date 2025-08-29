@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import styles from "./Modal.module.css";
 
-export default function Modal({ isOpen, children }) {
+export default function Modal({ isOpen, children, callBack }) {
   const dialogRef = useRef();
 
   useEffect(() => {
@@ -22,5 +23,22 @@ export default function Modal({ isOpen, children }) {
   const container = document.getElementById("modal");
   if (!container) return null;
 
-  return createPortal(<dialog className="rounded-md shadow-md" ref={dialogRef}>{children}</dialog>, container);
+  return createPortal(
+    <dialog
+      className={`${styles.uiDialogBox} rounded-md shadow-md`}
+      ref={dialogRef}
+    >
+      <div className={styles.children}>{children}</div>
+      <button
+        onClick={() => {
+          dialogRef.current.close();
+          callBack();
+        }}
+        className="bg-red-400"
+      >
+        Close
+      </button>
+    </dialog>,
+    container
+  );
 }
