@@ -6,13 +6,12 @@ import ChatWindow from "./components/ChatWindow-Component/ChatWindow";
 import AuthWindow from "./components/Auth-Component/AuthWindow";
 import { useSelector } from "react-redux";
 import useFetch from "./custom-hooks/useFetch";
+import { API_url } from "./configuration/config";
 
 const config = {
   method: "GET",
-  header: {
-    "content-type": "application/json",
-  },
   credentials: "include",
+  headers: { "Content-Type": "application/json" },
 };
 
 function App() {
@@ -21,12 +20,12 @@ function App() {
 
   const { data, error, isLoading } = useFetch(
     [],
-    "https://localhost:7038/api/Message",
+    `${API_url}/api/Message`,
     config,
     !isLoggedIn
   );
 
-  console.log(data,isLoading,isLoggedIn);
+  console.log(data, isLoading, isLoggedIn);
 
   return (
     <>
