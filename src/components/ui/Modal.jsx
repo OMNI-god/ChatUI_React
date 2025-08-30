@@ -9,34 +9,26 @@ export default function Modal({ isOpen, children, callBack }) {
     const modal = dialogRef.current;
     if (!modal) return;
 
-    if (isOpen) {
-      if (!modal.open) {
-        modal.showModal();
-      }
-    } else {
-      if (modal.open) {
-        modal.close();
-      }
+    if (isOpen && !modal.open) {
+      modal.showModal();
+    } else if (!isOpen && modal.open) {
+      modal.close();
     }
   }, [isOpen]);
 
   const container = document.getElementById("modal");
   if (!container) return null;
 
+  const handleClose = () => {
+    dialogRef.current?.close();
+    callBack?.();
+  };
+
   return createPortal(
-    <dialog
-      className={`${styles.uiDialogBox} rounded-md shadow-md`}
-      ref={dialogRef}
-    >
+    <dialog className={styles.uiDialogBox} ref={dialogRef}>
       <div className={styles.children}>{children}</div>
-      <button
-        onClick={() => {
-          dialogRef.current.close();
-          callBack();
-        }}
-        className="bg-red-400"
-      >
-        Close
+      <button className={styles.closeButton} onClick={handleClose}>
+        <ion-icon className={styles.icon} name="close-outline"></ion-icon> Close
       </button>
     </dialog>,
     container
