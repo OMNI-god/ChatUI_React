@@ -1,0 +1,18 @@
+.chatu-logo {
+  display: block;
+}
+
+.chatu-logo .bubble-bg {
+  fill: #25d366; /* WhatsApp green vibe */
+}
+
+.chatu-logo .bubble-tail {
+  fill: #25d366;
+}
+
+.chatu-logo .logo-text {
+  font: 700 50px/1 "Segoe UI", Roboto, sans-serif;
+  fill: #333;
+  letter-spacing: 2px;
+  user-select: none;
+}

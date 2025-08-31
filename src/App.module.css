@@ -1,0 +1,16 @@
+.chatDiv {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  max-height: 100vh;
+  overflow: hidden;
+}
+.sidebarDiv,
+.chatWindowDiv {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  scroll-behavior: smooth;
+}
+.chatWindowDiv ::-webkit-scrollbar {
+  display: none;
+}

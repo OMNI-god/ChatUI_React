@@ -17,7 +17,7 @@ export default function ChatHeader({ user }) {
             <p className="font-bold">{user.sender}</p>
             <p>3 dot</p>
           </div>
-          <Modal isOpen={viewPic}>
+          {/* <Modal isOpen={viewPic}>
             <div className="m-3 flex flex-col">
               <p className="font-extrabold mb-4 bg-slate-100 shadow-md p-2">
                 {user.sender}
@@ -37,7 +37,7 @@ export default function ChatHeader({ user }) {
                 Close
               </button>
             </div>
-          </Modal>
+          </Modal> */}
         </nav>
       )}
     </>

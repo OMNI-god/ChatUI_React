@@ -1,0 +1,31 @@
+.chatList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  scroll-behavior: smooth;
+  padding: 0.4rem 0.2rem;
+}
+.chatListItem {
+  background-color: #f1f3f5;
+  display: flex;
+  gap: 0.8rem;
+  padding: 0.4rem 0;
+}
+.profileImg {
+  width: 5.2rem;
+  border-radius: 50%;
+}
+.chatDetail {
+  width: 100%;
+}
+.userDetail {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 0.4rem;
+}
+.chatListItem:hover {
+  background-color: #dee2e6;
+}
+.latestTime {
+  text-overflow: clip;
+}

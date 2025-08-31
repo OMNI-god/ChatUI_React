@@ -1,0 +1,40 @@
+.sidebarHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.4rem 0.8rem;
+}
+.appIconDiv {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  align-items: center;
+}
+.appIconDiv p {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+.appIconDiv ion-icon {
+  width: 2.8rem;
+  height: 2.8rem;
+  background: #d0ebff;
+  border-radius: 50%;
+  padding: 0.4rem;
+  color: #1971c2;
+  box-sizing: border-box;
+}
+.chatListDiv {
+  flex: 1;
+  overflow-y: auto;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+.sidebarContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.chatListDiv::-webkit-scrollbar {
+  display: none;
+}
