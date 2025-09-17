@@ -1,0 +1,29 @@
+.header {
+  background-color: #d0ebff;
+  padding: 0.4rem 0.6rem;
+}
+.nav {
+  display: flex;
+  align-items: center;
+}
+.image {
+  width: 3.6em;
+  height: 3.6rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.details {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0rem 0.4rem;
+  align-items: center;
+}
+.name {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+.icon {
+  font-size: 1.4rem;
+  cursor: pointer;
+}
