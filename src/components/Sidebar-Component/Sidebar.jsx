@@ -2,7 +2,8 @@ import { useEffect, useReducer, useState } from "react";
 import { messages } from "../../utils/dummy_data.js";
 import ChatList from "./ChatList.jsx";
 import SearchBar from "./SearchBar.jsx";
-import { ReactComponent } from "../../assets/Main_Icon.jsx";
+import styles from "./Sidebar.module.css";
+import ChatULogo from "../../assets/Main_Icon.jsx";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -43,12 +44,18 @@ export default function Sidebar({ selectUser }) {
   }, [sidebarState.searchValue]);
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="border shadow-sm rounded-md p-1 bg-stone-100">
-        <ReactComponent />
+    <div className={styles.sidebarContainer}>
+      <header className={`${styles.sidebarHeader}`}>
+        <div className={`${styles.appIconDiv}`}>
+          <ion-icon
+            className={styles.icon}
+            name="chatbubble-ellipses-outline"
+          ></ion-icon>
+          <p>ChatU</p>
+        </div>
         <SearchBar searchValue={sidebarState.searchValue} dispatch={dispatch} />
-      </div>
-      <div className="flex-1 overflow-y-auto scroll-smooth no-scrollbar">
+      </header>
+      <div className={`${styles.chatListDiv}`}>
         <ChatList chats={sidebarState.chats} selectUser={selectUser} />
       </div>
     </div>

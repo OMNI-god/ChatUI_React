@@ -1,0 +1,97 @@
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.messagesContainer {
+  flex: 1;
+  overflow-y: auto;
+  border-radius: 6px;
+  background-color: #f1f5f9; /* slate-100 */
+  padding: 8px;
+}
+
+.messageRow {
+  display: flex;
+  width: 100%;
+  padding: 4px 0;
+}
+
+.alignLeft {
+  justify-content: flex-start;
+}
+
+.alignRight {
+  justify-content: flex-end;
+}
+
+.messageBubble {
+  max-width: 250px;
+  border-radius: 8px;
+  padding: 8px;
+  color: #fff;
+}
+
+.sender {
+  background-color: #3b82f6; /* blue-500 */
+}
+
+.receiver {
+  background-color: #22c55e; /* green-500 */
+}
+
+.messageText {
+  margin: 0;
+  word-wrap: break-word; /* break long words */
+  overflow-wrap: break-word; /* modern property */
+  white-space: pre-wrap; /* preserve spacing but allow wrapping */
+  word-break: break-word; /* extra safety */
+}
+
+.timeRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.messageTime {
+  font-size: 0.75rem;
+  color: #e5e7eb; /* gray-200 */
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #ccc;
+  padding: 4px;
+}
+
+.chatInput {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 0.6rem;
+  padding: 0rem 0.6rem;
+  resize: none;
+  overflow-y: auto;
+  font-size: 1.6rem;
+  font-weight: 500;
+  outline: none;
+}
+
+.sendIcon {
+  width: 40px;
+  height: 40px;
+  margin: 4px;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.sendIcon:hover {
+  background-color: #e2e8f0; /* slate-200 */
+}
+.chatInput:focus {
+  border-color: #1c7ed6;
+}

@@ -7,6 +7,7 @@ import AuthWindow from "./components/Auth-Component/AuthWindow";
 import { useSelector } from "react-redux";
 import useFetch from "./custom-hooks/useFetch";
 import { API_url } from "./configuration/config";
+import styles from "./App.module.css";
 
 const config = {
   method: "GET",
@@ -29,14 +30,14 @@ function App() {
 
   return (
     <>
-      {!isLoggedIn ? (
+      {!true ? (
         <AuthWindow />
       ) : (
-        <div className="h-screen flex">
-          <div className="w-1/3 mx-1">
+        <div className={`${styles.chatDiv}`}>
+          <div className={`${styles.sidebarDiv}`}>
             <Sidebar selectUser={setUser} />
           </div>
-          <div className="flex-1 flex flex-col overflow-hidden">
+          <div className={`${styles.chatWindowDiv}`}>
             <ChatWindow user={user} />
           </div>
         </div>
