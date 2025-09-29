@@ -43,6 +43,8 @@
 }
 
 .messageText {
+  font-size: 1.2rem;
+  font-weight: 600;
   margin: 0;
   word-wrap: break-word; /* break long words */
   overflow-wrap: break-word; /* modern property */
@@ -56,7 +58,8 @@
 }
 
 .messageTime {
-  font-size: 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
   color: #e5e7eb; /* gray-200 */
 }
 

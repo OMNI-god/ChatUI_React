@@ -1,42 +1,37 @@
 import { useState, useEffect } from "react";
-import styles from "./UserChat.module.css"; // import CSS module
+import styles from "./UserChat.module.css";
 
-export default function UserChat({ user }) {
-  const [messages, setMessages] = useState({});
-  const message = messages[user.id] || "";
+export default function UserChat({ user, messages, onSendMessage }) {
+  const [drafts, setDrafts] = useState({});
+  const message = drafts[user.id] || "";
 
-  const handleChange = (e) => {
-    setMessages((prev) => ({
+  function handleChange(event) {
+    setDrafts((prev) => ({
       ...prev,
-      [user.id]: e.target.value,
+      [user.id]: event.target.value,
     }));
-  };
+  }
 
-  useEffect(() => {
-    if (!(user.id in messages)) {
-      setMessages((prev) => ({
-        ...prev,
-        [user.id]: "",
-      }));
-    }
-  }, [user]);
+  function handleSend() {
+    if (message.trim() === "") return;
+    onSendMessage(user.id, message);
+    setDrafts((prev) => ({
+      ...prev,
+      [user.id]: "",
+    }));
+  }
 
   function handleKeydown(event) {
-    if (event.keyCode === 13) {
+    if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
-      if (user.id in messages) {
-        setMessages((prev) => ({
-          ...prev,
-          [user.id]: "",
-        }));
-      }
+      handleSend();
     }
   }
 
   return (
     <div className={styles.chatContainer}>
       <div className={styles.messagesContainer}>
-        {user.chat.map((value, idx) => (
+        {messages.map((value, idx) => (
           <div
             key={`message-${idx}`}
             className={`${styles.messageRow} ${
@@ -69,6 +64,7 @@ export default function UserChat({ user }) {
           fill="currentColor"
           viewBox="0 0 24 24"
           className={styles.sendIcon}
+          onClick={handleSend}
         >
           <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
         </svg>
