@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import CircleLoader from "../ui/Loading-Animations";
-import { authActions, user_service } from "../../strore/AuthSlice";
+import { authActions, auth_service } from "../../strore/AuthSlice";
 import styles from "./AuthForm.module.css";
 import Modal from "../ui/Modal";
 import { API_url } from "../../configuration/config";
@@ -27,7 +27,7 @@ export default function AuthForm({ isLogin, setIsLogin }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     };
-    dispatch(user_service(`${API_url}/api/Users/Login`, config));
+    dispatch(auth_service(`${API_url}/api/Users/Login`, config));
   }
   console.log(error);
   return (

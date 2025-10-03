@@ -1,9 +1,8 @@
 import { useEffect, useReducer, useState } from "react";
-import { messages } from "../../utils/dummy_data.js";
 import ChatList from "./ChatList.jsx";
 import SearchBar from "./SearchBar.jsx";
 import styles from "./Sidebar.module.css";
-import ChatULogo from "../../assets/Main_Icon.jsx";
+import { useSelector } from "react-redux";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -19,6 +18,8 @@ function reducer(state, action) {
 }
 
 export default function Sidebar({ selectUser }) {
+  const messages = useSelector((state) => state.msg.chats);
+
   const [sidebarState, dispatch] = useReducer(reducer, {
     searchValue: "",
     chats: messages || [],

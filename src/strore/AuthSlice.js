@@ -3,7 +3,7 @@ import { apiCall } from "../APICalls/APICall";
 
 const initialState = {
   isLoggedIn: false,
-  data: {},
+  data: undefined,
   isLoading: false,
   error: null,
 };
@@ -13,10 +13,7 @@ const authSlice = createSlice({
   initialState: initialState,
   reducers: {
     logout(state) {
-      state.data = {};
-      state.error = null;
-      state.isLoading = false;
-      state.isLoggedIn = false;
+      state.data = initialState;
     },
     setLoading(state, action) {
       state.isLoading = action.payload;
@@ -31,11 +28,16 @@ const authSlice = createSlice({
   },
 });
 
-export const user_service = (url, config) => {
+export const auth_service = (url, config) => {
   return async (dispatch) => {
     try {
       dispatch(authActions.setLoading(true));
       const data = await apiCall(url, config);
+      console.log(data);
+      if (data?.userId && data?.csrfToken) {
+        localStorage.setItem("UserID", data.userId);
+        sessionStorage.setItem("antiforgeryToken", data.csrfToken);
+      }
       dispatch(authActions.setData(data));
     } catch (error) {
       dispatch(
