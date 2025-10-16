@@ -7,13 +7,8 @@ import AuthWindow from "./components/Auth-Component/AuthWindow";
 import { useDispatch, useSelector } from "react-redux";
 import { API_url } from "./configuration/config";
 import styles from "./App.module.css";
-import { fetchMessages } from "./strore/MessageSlice";
-
-const config = {
-  method: "GET",
-  credentials: "include",
-  headers: { "Content-Type": "application/json", "X-CSRF-Token": "" },
-};
+import { fetchMessages, messageActions } from "./strore/MessageSlice";
+import { startConnection, stopConnection } from "./services/SignalRService.js";
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -22,30 +17,45 @@ function App() {
 
   useEffect(() => {
     if (isLoggedIn) {
+      const token = sessionStorage.getItem("antiforgeryToken");
+      const userId = localStorage.getItem("UserID");
+
+      const config = {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": token,
+        },
+      };
+
+      // Fetch messages
       dispatch(
-        fetchMessages(`${API_url}/api/Message?page=1&pageSize=50`, {
-          ...config,
-          headers: {
-            ...config.headers,
-            "X-CSRF-Token": sessionStorage.getItem("antiforgeryToken"),
-          },
+        fetchMessages({
+          url: `${API_url}/api/Message?userId=${userId}&page=1&pageSize=50`,
+          config,
         })
       );
-    }
-  }, [isLoggedIn]);
 
-  console.log(isLoggedIn);
+      // Start SignalR connection
+      startConnection(userId, token, (msg) => {
+        dispatch(messageActions.addMessage({ message: msg }));
+      });
+
+      return () => stopConnection();
+    }
+  }, [isLoggedIn, dispatch]);
 
   return (
     <>
       {!isLoggedIn ? (
         <AuthWindow />
       ) : (
-        <div className={`${styles.chatDiv}`}>
-          <div className={`${styles.sidebarDiv}`}>
+        <div className={styles.chatDiv}>
+          <div className={styles.sidebarDiv}>
             <Sidebar selectUser={setUser} />
           </div>
-          <div className={`${styles.chatWindowDiv}`}>
+          <div className={styles.chatWindowDiv}>
             <ChatWindow user={user} />
           </div>
         </div>
@@ -53,4 +63,5 @@ function App() {
     </>
   );
 }
+
 export default App;

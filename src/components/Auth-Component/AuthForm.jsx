@@ -4,6 +4,7 @@ import { authActions, auth_service } from "../../strore/AuthSlice";
 import styles from "./AuthForm.module.css";
 import Modal from "../ui/Modal";
 import { API_url } from "../../configuration/config";
+import { useState } from "react";
 
 const initialState = {
   username_email: "",
@@ -13,6 +14,10 @@ const initialState = {
 };
 
 export default function AuthForm({ isLogin, setIsLogin }) {
+  cons[password, setPassword] = useState({
+    password: "",
+    confirmPassword: "",
+  });
   const isLoading = useSelector((state) => state.auth.isLoading);
   const error = useSelector((state) => state.auth.error);
   const dispatch = useDispatch();
@@ -29,6 +34,7 @@ export default function AuthForm({ isLogin, setIsLogin }) {
     };
     dispatch(auth_service(`${API_url}/api/Users/Login`, config));
   }
+
   console.log(error);
   return (
     <>
@@ -59,6 +65,7 @@ export default function AuthForm({ isLogin, setIsLogin }) {
               id={`${isLogin ? "username_email" : "username"}`}
               type="text"
               required
+              onChange={(e)=>}
             />
           </div>
 
