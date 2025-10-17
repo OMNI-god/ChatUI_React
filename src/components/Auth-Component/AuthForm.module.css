@@ -52,6 +52,10 @@
   font-weight: 500;
 }
 
+.fields div input:autofill {
+  background-color: #fff;
+}
+
 .actions {
   display: flex;
   align-items: center;
@@ -74,6 +78,10 @@
 .actions button {
   border-radius: 1rem;
   padding: 1rem 0.8rem;
+}
+
+.mismatch {
+  border: 0.2rem solid #e21d0fb0 !important;
 }
 
 /* @media (max-width: 768px) {
