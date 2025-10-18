@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import CircleLoader from "../ui/Loading-Animations";
-import { authActions, user_service } from "../../strore/AuthSlice";
+import { authActions, auth_service } from "../../strore/AuthSlice";
 import styles from "./AuthForm.module.css";
 import Modal from "../ui/Modal";
 import { API_url } from "../../configuration/config";
+import { useState } from "react";
 
 const initialState = {
   username_email: "",
@@ -13,6 +14,12 @@ const initialState = {
 };
 
 export default function AuthForm({ isLogin, setIsLogin }) {
+  const [password, setPassword] = useState({
+    password: "",
+    confirmPassword: "",
+    passwordMatched: false,
+  });
+
   const isLoading = useSelector((state) => state.auth.isLoading);
   const error = useSelector((state) => state.auth.error);
   const dispatch = useDispatch();
@@ -27,9 +34,33 @@ export default function AuthForm({ isLogin, setIsLogin }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     };
-    dispatch(user_service(`${API_url}/api/Users/Login`, config));
+    if (isLogin) {
+      dispatch(auth_service(`${API_url}/api/Users/Login`, config));
+    } else if (!isLogin && password.passwordMatched) {
+      dispatch(auth_service(`${API_url}/api/Users/Register`, config));
+    }
   }
+
+  function handleChange(event) {
+    setPassword((prev) => {
+      return { ...prev, [event.target.name]: event.target.value };
+    });
+  }
+
+  function handleBlur() {
+    if (password.password === password.confirmPassword) {
+      setPassword((prev) => {
+        return { ...prev, passwordMatched: true };
+      });
+    } else {
+      setPassword((prev) => {
+        return { ...prev, passwordMatched: false };
+      });
+    }
+  }
+
   console.log(error);
+  console.log(password);
   return (
     <>
       {error && (
@@ -53,6 +84,7 @@ export default function AuthForm({ isLogin, setIsLogin }) {
           <div>
             <label htmlFor={`${isLogin ? "username_email" : "username"}`}>
               {isLogin ? "Username/Email" : "Username"}
+              <span></span>
             </label>
             <input
               name={`${isLogin ? "username_email" : "username"}`}
@@ -71,17 +103,26 @@ export default function AuthForm({ isLogin, setIsLogin }) {
 
           <div>
             <label htmlFor="password">Password</label>
-            <input name="password" id="password" type="password" required />
+            <input
+              name="password"
+              id="password"
+              type="password"
+              required
+              onChange={(e) => handleChange(e)}
+            />
           </div>
 
           {!isLogin && (
             <div>
               <label htmlFor="confirmPassword">Confirm Password</label>
               <input
+                className={!password.passwordMatched ? styles.mismatch : ""}
                 name="confirmPassword"
                 id="confirmPassword"
                 type="password"
                 required
+                onChange={(e) => handleChange(e)}
+                onBlur={handleBlur}
               />
             </div>
           )}
