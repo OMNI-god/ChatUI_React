@@ -34,8 +34,10 @@ export default function AuthForm({ isLogin, setIsLogin }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     };
-    if (!isLogin && password.passwordMatched) {
+    if (isLogin) {
       dispatch(auth_service(`${API_url}/api/Users/Login`, config));
+    } else if (!isLogin && password.passwordMatched) {
+      dispatch(auth_service(`${API_url}/api/Users/Register`, config));
     }
   }
 

@@ -11,7 +11,7 @@ import { fetchMessages, messageActions } from "./strore/MessageSlice";
 import { startConnection, stopConnection } from "./services/SignalRService.js";
 
 function App() {
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const isLoggedIn = !useSelector((state) => state.auth.isLoggedIn);
   const [user, setUser] = useState();
   const dispatch = useDispatch();
 
