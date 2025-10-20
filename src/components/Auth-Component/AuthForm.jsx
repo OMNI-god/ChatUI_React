@@ -58,9 +58,9 @@ export default function AuthForm({ isLogin, setIsLogin }) {
       });
     }
   }
-
-  console.log(error);
-  console.log(password);
+  if (error) {
+    console.error(error);
+  }
   return (
     <>
       {error && (

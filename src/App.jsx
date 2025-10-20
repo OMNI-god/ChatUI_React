@@ -1,14 +1,23 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense, lazy } from "react";
 import "./App.css";
-import Sidebar from "./components/Sidebar-Component/Sidebar";
-import ChatWindow from "./components/ChatWindow-Component/ChatWindow";
-import AuthWindow from "./components/Auth-Component/AuthWindow";
 import { useDispatch, useSelector } from "react-redux";
 import { API_url } from "./configuration/config";
 import styles from "./App.module.css";
 import { fetchMessages, messageActions } from "./strore/MessageSlice";
 import { startConnection, stopConnection } from "./services/SignalRService.js";
+import CircleLoader from "./components/ui/Loading-Animations";
+
+// ✅ Lazy load large components
+const Sidebar = lazy(() =>
+  import("./components/Sidebar-Component/Sidebar.jsx")
+);
+const ChatWindow = lazy(() =>
+  import("./components/ChatWindow-Component/ChatWindow.jsx")
+);
+const AuthWindow = lazy(() =>
+  import("./components/Auth-Component/AuthWindow.jsx")
+);
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -46,8 +55,16 @@ function App() {
     }
   }, [isLoggedIn, dispatch]);
 
+  // ✅ Centralized fallback for lazy components
+  const fallbackScreen = (
+    <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
+      <CircleLoader />
+      <span className="ml-3">Loading...</span>
+    </div>
+  );
+
   return (
-    <>
+    <Suspense fallback={fallbackScreen}>
       {!isLoggedIn ? (
         <AuthWindow />
       ) : (
@@ -60,7 +77,7 @@ function App() {
           </div>
         </div>
       )}
-    </>
+    </Suspense>
   );
 }
 
